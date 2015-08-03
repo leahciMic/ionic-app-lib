@@ -220,7 +220,7 @@ describe('Upload', function() {
         expect(Upload.zipContents).toHaveBeenCalledWith(testDir, 'www');
         expect(Upload.removeCacheBusters).toHaveBeenCalledWith(indexPath);
         expect(Upload.getDirectUploadKey).toHaveBeenCalledWith(project, jar, note);
-        expect(IoLib.writeIoConfig).toHaveBeenCalledWith('app_id', key.app_id, true);
+        expect(IoLib.writeIoConfig).toHaveBeenCalledWith('app_id', key.app_id, true, testDir);
         expect(Upload.uploadToS3).toHaveBeenCalledWith(testDir, key);
         expect(Upload.signalDashUpload).toHaveBeenCalledWith(project, jar);
       })
