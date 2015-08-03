@@ -13,7 +13,7 @@ var archiver = require('archiver'),
 var testDir = '/ionic/app',
     configPath = __dirname;
 
-ddescribe('IoConfig', function() {
+describe('IoConfig', function() {
 
   beforeEach(function() {
   });
@@ -26,7 +26,7 @@ ddescribe('IoConfig', function() {
     expect(IoConfig.warnMissingData).toThrow('You must specify the app directory of the config you wish to list.');
   });
 
-  iit('should allow calls with app directories', function(done) {
+  it('should allow calls with app directories', function(done) {
     var promise = Q.defer();
     spyOn(Q, 'defer').andReturn(promise);
     spyOn(fs, 'readFile').andCallFake(function(path, callBack) {
