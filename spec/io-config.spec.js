@@ -35,13 +35,10 @@ ddescribe('IoConfig', function() {
 
     Q()
     .then(function(){
-      // return IoConfig.warnMissingData(testDir);
-      return Q.resolve('hello');
+      return IoConfig.warnMissingData(testDir);
     })
     .then(function(result) {
-      // expect(result).toBe(true);
-      console.log(result);
-      return Q.reject('blah');
+      expect(result).toBe(true);
     })
     .catch(function(ex){
       expect('this').toBe(ex.stack);
