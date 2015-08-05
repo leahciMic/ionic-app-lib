@@ -426,12 +426,14 @@ describe('State', function() {
       spyOn(State, 'getPackageJson').andReturn({cordovaPlatforms: ['ios'], cordovaPlugins: ['org.apache.cordova.device']});
       spyOn(shelljs, 'rm');
       spyOn(State, 'savePackageJson');
+
       Q()
       .then(function(){
         return State.clearState(tempDirectory);
       })
       .then(function() {
-        expect(shelljs.rm).toHaveBeenCalledWith('-rf', [path.join(tempDirectory, 'platforms'), path.join(tempDirectory, 'plugins')]);
+        expect(shelljs.rm).toHaveBeenCalledWith('-rf', path.join(tempDirectory, 'platforms'));
+        expect(shelljs.rm).toHaveBeenCalledWith('-rf', path.join(tempDirectory, 'plugins'));
         expect(State.savePackageJson).toHaveBeenCalledWith(tempDirectory, {cordovaPlatforms: [], cordovaPlugins: []});
       })
       .catch(function(ex) {
@@ -439,7 +441,51 @@ describe('State', function() {
         expect('this').toBe('not this');
       })
       .fin(done);
-    })
+    });
+
+    it('should clear our the packageJson entries and remove platforms', function(done) {
+      spyOn(State, 'getPackageJson').andReturn({cordovaPlatforms: ['ios'], cordovaPlugins: ['org.apache.cordova.device']});
+      spyOn(shelljs, 'rm');
+      spyOn(State, 'savePackageJson');
+      var options = { platforms: true, plugins: false };
+
+      Q()
+      .then(function(){
+        return State.clearState(tempDirectory, options);
+      })
+      .then(function() {
+        expect(shelljs.rm).toHaveBeenCalledWith('-rf', path.join(tempDirectory, 'platforms'));
+        expect(shelljs.rm).not.toHaveBeenCalledWith('-rf', path.join(tempDirectory, 'plugins'));
+        expect(State.savePackageJson).toHaveBeenCalledWith(tempDirectory, {cordovaPlatforms: [], cordovaPlugins: ['org.apache.cordova.device']});
+      })
+      .catch(function(ex) {
+        console.log(ex.stack);
+        expect('this').toBe('not this');
+      })
+      .fin(done);
+    });
+
+    it('should clear our the packageJson entries and remove plugins', function(done) {
+      spyOn(State, 'getPackageJson').andReturn({cordovaPlatforms: ['ios'], cordovaPlugins: ['org.apache.cordova.device']});
+      spyOn(shelljs, 'rm');
+      spyOn(State, 'savePackageJson');
+      var options = { platforms: false, plugins: true };
+
+      Q()
+      .then(function(){
+        return State.clearState(tempDirectory, options);
+      })
+      .then(function() {
+        expect(shelljs.rm).not.toHaveBeenCalledWith('-rf', path.join(tempDirectory, 'platforms'));
+        expect(shelljs.rm).toHaveBeenCalledWith('-rf', path.join(tempDirectory, 'plugins'));
+        expect(State.savePackageJson).toHaveBeenCalledWith(tempDirectory, {cordovaPlatforms: ['ios'], cordovaPlugins: []});
+      })
+      .catch(function(ex) {
+        console.log(ex.stack);
+        expect('this').toBe('not this');
+      })
+      .fin(done);
+    });
   });
 
   describe('#saveState', function (){
