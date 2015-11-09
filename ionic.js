@@ -90,7 +90,8 @@ var argv = require('optimist').argv,
 //       '--nolivereload': 'Do not start live reload',
 //       '--noproxy|-x': 'Do not add proxies',
 //       '--address': 'Use specific address or return with failure',
-//       '--lab': 'Test your apps on multiple screen sizes and platform types'
+//       '--lab': 'Test your apps on multiple screen sizes and platform types',
+//       '--hostname': 'Use this hostname instead of the server address when launching the browser'
 //     },
 //     module: './ionic/serve'
 //   },
